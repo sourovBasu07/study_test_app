@@ -1,4 +1,5 @@
-import { AppSidebar } from "@/components/app-sidebar"
+import { auth } from "@/auth";
+import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,15 +7,19 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-export default function Page() {
+export default async function Page() {
+  const user = await auth();
+
+  console.log(user);
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -48,5 +53,5 @@ export default function Page() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

@@ -23,6 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signupFormSchema } from "@/lib/zod/userSchema";
+import { createUser } from "@/actions/user.actions";
 
 const SignupForm = ({
   className,
@@ -40,6 +41,10 @@ const SignupForm = ({
 
   const onSubmit = async (values: z.infer<typeof signupFormSchema>) => {
     console.log(values);
+    const { email, username, password } = values;
+    const newUser = await createUser({ email, username, password });
+
+    console.log(newUser);
   };
 
   return (

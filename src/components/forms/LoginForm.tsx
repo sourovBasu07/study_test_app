@@ -23,6 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginFormSchema } from "@/lib/zod/userSchema";
+import { signIn } from "next-auth/react";
 
 const LoginForm = ({
   className,
@@ -37,7 +38,13 @@ const LoginForm = ({
   });
 
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
-    console.log(values);
+    const result = await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+    });
+
+    console.log(result);
   };
 
   return (
