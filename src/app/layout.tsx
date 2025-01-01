@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/AuthProvider";
+import StoreProvider from "@/StoreProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,20 +34,22 @@ export default function RootLayout({
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-        <AuthProvider>
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
-          >
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-            </ThemeProvider>
-          </body>
-        </AuthProvider>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
+        >
+          <AuthProvider>
+            <StoreProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+              </ThemeProvider>
+            </StoreProvider>
+          </AuthProvider>
+        </body>
       </html>
     </>
   );

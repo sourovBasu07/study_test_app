@@ -23,12 +23,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signupFormSchema } from "@/lib/zod/userSchema";
-import { createUser } from "@/actions/user.actions";
+// import { createUser } from "@/lib/actions/user.actions";
+import { useCreateUserMutation } from "@/lib/apiSlices/usersSlice";
 
 const SignupForm = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) => {
+  const [createUser, { isLoading }] = useCreateUserMutation();
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -144,7 +146,7 @@ const SignupForm = ({
                   )}
                 />
 
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={isLoading}>
                   Sign Up
                 </Button>
               </form>
