@@ -33,10 +33,10 @@ export default function RootLayout({
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
-        >
-          <AuthProvider>
+        <AuthProvider>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
+          >
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
@@ -45,8 +45,8 @@ export default function RootLayout({
             >
               {children}
             </ThemeProvider>
-          </AuthProvider>
-        </body>
+          </body>
+        </AuthProvider>
       </html>
     </>
   );
