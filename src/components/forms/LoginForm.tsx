@@ -24,11 +24,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginFormSchema } from "@/lib/zod/userSchema";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const LoginForm = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -44,7 +46,9 @@ const LoginForm = ({
       redirect: false,
     });
 
-    console.log(result);
+    if (!result?.error) {
+      router.push("/dashboard");
+    }
   };
 
   return (
