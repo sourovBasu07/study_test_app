@@ -1,7 +1,7 @@
 "use server";
 
 import { connectDB } from "@/lib/mongodb";
-import User from "@/models/user.schema";
+import User from "@/models/user.model";
 import bcrypt from "bcryptjs";
 
 export const createUser = async (values: any) => {

@@ -24,13 +24,17 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginFormSchema } from "@/lib/zod/userSchema";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { usePaymentLink } from "@/lib/features/PaymentContext";
 
 const LoginForm = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { paymentLink } = usePaymentLink();
+  const redirectTo = searchParams.get("redirect") || "/dashboard";
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -39,16 +43,18 @@ const LoginForm = ({
     },
   });
 
+  console.log(paymentLink);
+
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
     const result = await signIn("credentials", {
       email: values.email,
       password: values.password,
-      redirect: false,
+      redirectTo: redirectTo,
     });
 
-    if (!result?.error) {
-      router.push("/dashboard");
-    }
+    // if (!result?.error) {
+    //   router.push("/dashboard");
+    // }
   };
 
   return (
