@@ -1,14 +1,10 @@
-import Quiz from "@/components/Quiz";
+import CreateTestForm from "@/components/forms/CreateTestForm";
 
-const CreateTest = () => {
-  const numberOfQuestions = 25;
-
+const CreateTestPage = () => {
   return (
-    <div className="w-full grid grid-cols-2 gap-12 px-7">
-      {Array.from({ length: numberOfQuestions }).map((_, index) => {
-        return <Quiz key={index} />;
-      })}
+    <div className="">
+      <CreateTestForm />
     </div>
   );
 };
-export default CreateTest;
+export default CreateTestPage;

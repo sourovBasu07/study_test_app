@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import CheckPaymentLink from "@/components/CheckPaymentLink";
-import UseFieldArrayUnregister from "@/components/Quiz";
+import UseFieldArrayUnregister from "@/components/forms/QuizBuilderForm";
 // import QuizForm from "@/components/Quiz";
 import {
   Breadcrumb,

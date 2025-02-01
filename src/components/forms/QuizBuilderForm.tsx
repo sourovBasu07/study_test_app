@@ -18,9 +18,9 @@ import { z } from "zod";
 import { quizSchema } from "@/lib/zod/quizSchema";
 import { CloudUpload, Plus, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "../ui/textarea";
 
-const Quiz = () => {
+const QuizBuilderForm = () => {
   const form = useForm<z.infer<typeof quizSchema>>({
     resolver: zodResolver(quizSchema),
     defaultValues: {
@@ -173,4 +173,4 @@ const Quiz = () => {
   );
 };
 
-export default Quiz;
+export default QuizBuilderForm;

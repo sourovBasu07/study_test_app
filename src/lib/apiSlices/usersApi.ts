@@ -1,8 +1,8 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { createUser } from "../actions/user.actions";
 
-export const userApi = createApi({
-  reducerPath: "userApi",
+export const usersApi = createApi({
+  reducerPath: "usersApi",
   baseQuery: fakeBaseQuery(),
   endpoints: (build) => ({
     createUser: build.mutation({
@@ -20,4 +20,4 @@ export const userApi = createApi({
   }),
 });
 
-export const { useCreateUserMutation } = userApi;
+export const { useCreateUserMutation } = usersApi;

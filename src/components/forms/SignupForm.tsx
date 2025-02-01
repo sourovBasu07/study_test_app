@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signupFormSchema } from "@/lib/zod/userSchema";
 // import { createUser } from "@/lib/actions/user.actions";
-import { useCreateUserMutation } from "@/lib/apiSlices/usersSlice";
+import { useCreateUserMutation } from "@/lib/apiSlices/usersApi";
 
 const SignupForm = ({
   className,
