@@ -15,6 +15,14 @@ export interface CreateTestDocument {
   subject: string;
   totalQuestions: number;
   duration: number;
+  questions: {
+    question: string;
+    options: string[];
+    correctAnswer: {
+      number: number;
+      text: string;
+    };
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }

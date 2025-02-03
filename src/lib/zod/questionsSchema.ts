@@ -4,7 +4,7 @@ export const optionSchema = z.object({
   option: z.string().min(1, "Option cannot be empty"),
 });
 
-export const quizSchema = z.object({
+export const questionSchema = z.object({
   question: z.string().min(10, "Minimum 10 characters are required"),
   options: z
     .array(optionSchema)

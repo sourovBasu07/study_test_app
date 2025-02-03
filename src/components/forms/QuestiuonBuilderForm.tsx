@@ -15,14 +15,14 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { quizSchema } from "@/lib/zod/quizSchema";
+import { questionSchema } from "@/lib/zod/questionsSchema";
 import { CloudUpload, Plus, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "../ui/textarea";
 
-const QuizBuilderForm = () => {
-  const form = useForm<z.infer<typeof quizSchema>>({
-    resolver: zodResolver(quizSchema),
+const QuestionBuilderForm = () => {
+  const form = useForm<z.infer<typeof questionSchema>>({
+    resolver: zodResolver(questionSchema),
     defaultValues: {
       question: "",
       options: [{ option: "Option 1" }, { option: "Option 2" }],
@@ -47,8 +47,8 @@ const QuizBuilderForm = () => {
     }
   };
 
-  const onSubmit = async (data: z.infer<typeof quizSchema>) => {
-    const result = await quizSchema.safeParseAsync(data);
+  const onSubmit = async (data: z.infer<typeof questionSchema>) => {
+    const result = await questionSchema.safeParseAsync(data);
 
     if (!result.success) {
       result.error.errors.map((error) => {
@@ -173,4 +173,4 @@ const QuizBuilderForm = () => {
   );
 };
 
-export default QuizBuilderForm;
+export default QuestionBuilderForm;

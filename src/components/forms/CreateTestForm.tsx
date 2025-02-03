@@ -21,19 +21,30 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { useCreateTestMutation } from "@/lib/apiSlices/testsApi";
 import { createTestSchema } from "@/lib/zod/testSchema";
+import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const CreateTestForm = () => {
-  const [createTest, { isLoading, isSuccess }] = useCreateTestMutation();
+  const router = useRouter();
+  const [createTest, { data: test, isLoading, isSuccess }] =
+    useCreateTestMutation();
   const form = useForm<z.infer<typeof createTestSchema>>({
     resolver: zodResolver(createTestSchema),
     defaultValues: {
       subject: "",
     },
   });
+
+  useEffect(() => {
+    if (isSuccess && test) {
+      router.replace(`/tests/manage/${test.data._id}`);
+    }
+  }, [isSuccess, test, router]);
 
   const onSubmit = async (values: z.infer<typeof createTestSchema>) => {
     console.log(values);
@@ -45,12 +56,19 @@ const CreateTestForm = () => {
       return;
     }
     try {
-      const result = await createTest(data);
-      console.log(result);
-    } catch (error: any) {
-      return toast({
+      await createTest(data).unwrap();
+
+      toast({
+        title: "Success",
+        description: "Test created successfully",
+      });
+    } catch (error: unknown) {
+      toast({
         title: "Error!",
-        description: "Error",
+        description: getApiErrorMessage(
+          error,
+          "Failed creating test. Please try again."
+        ),
       });
     }
   };
@@ -63,7 +81,7 @@ const CreateTestForm = () => {
             <CardHeader>
               <CardTitle>Create Test</CardTitle>
               <CardDescription>
-                Examine the progress of your students
+                Evaluate the progress of your students
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
@@ -128,7 +146,16 @@ const CreateTestForm = () => {
               />
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button type="submit">Create</Button>
+              <Button type="submit">
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="animate-spin" />
+                    <p className="">Creating...</p>
+                  </div>
+                ) : (
+                  "Create"
+                )}
+              </Button>
             </CardFooter>
           </Card>
         </form>

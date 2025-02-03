@@ -11,7 +11,10 @@ export const testsApi = createApi({
         body,
       }),
     }),
+    getTest: builder.query({
+      query: (id) => ({ url: `/tests/${id}`, method: "GET" }),
+    }),
   }),
 });
 
-export const { useCreateTestMutation } = testsApi;
+export const { useCreateTestMutation, useGetTestQuery } = testsApi;
