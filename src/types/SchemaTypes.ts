@@ -10,7 +10,7 @@ export interface UserDocument {
   updatedAt: Date;
 }
 
-export interface CreateTestDocument {
+export interface TestDocument {
   _id: string;
   subject: string;
   totalQuestions: number;

@@ -1,4 +1,4 @@
-import { CreateTestDocument } from "@/types/UserSchemaType";
+import { TestDocument } from "@/types/SchemaTypes";
 import mongoose from "mongoose";
 import { model } from "mongoose";
 import { Schema } from "mongoose";
@@ -26,7 +26,7 @@ const QuestionSchema = new Schema({
   },
 });
 
-const TestSchema = new Schema<CreateTestDocument>(
+const TestSchema = new Schema<TestDocument>(
   {
     subject: {
       type: String,
@@ -49,7 +49,6 @@ const TestSchema = new Schema<CreateTestDocument>(
   }
 );
 
-const Test =
-  mongoose.models.Test || model<CreateTestDocument>("Test", TestSchema);
+const Test = mongoose.models.Test || model<TestDocument>("Test", TestSchema);
 
 export default Test;

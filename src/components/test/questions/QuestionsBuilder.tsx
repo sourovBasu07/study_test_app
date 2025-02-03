@@ -1,10 +1,10 @@
 "use client";
 
-import QuestionBuilderForm from "@/components/forms/QuestiuonBuilderForm";
-import { useGetTestQuery } from "@/lib/apiSlices/testsApi";
+import QuestionBuilderForm from "@/components/forms/QuestionBuilderForm";
+import { useGetTestByIdQuery } from "@/lib/apiSlices/testsApi";
 
 const QuestionsBuilder = ({ testId }: { testId: string }) => {
-  const { data: test, isLoading } = useGetTestQuery(testId, {
+  const { data: test, isLoading } = useGetTestByIdQuery(testId, {
     skip: !testId,
   });
 

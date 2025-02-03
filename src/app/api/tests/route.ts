@@ -37,27 +37,21 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest) {
   await connectDB();
   try {
-    const testId = (await params).id;
+    const tests = await Test.find({});
 
-    if (!testId) {
-      return NextResponse.json({ error: "Test ID not found" }, { status: 400 });
+    console.log("Test", tests);
+
+    if (!tests) {
+      return NextResponse.json(
+        { error: "No test found. Please create first" },
+        { status: 400 }
+      );
     }
 
-    const test = await Test.findOne({ _id: testId });
-
-    console.log("Test", test);
-
-    if (!test) {
-      return NextResponse.json({ error: "Invalid test ID" }, { status: 400 });
-    }
-
-    return NextResponse.json({ data: test, status: 200 }, { status: 200 });
+    return NextResponse.json({ data: tests, status: 200 }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(
       { error: getErrorMessage(error) },

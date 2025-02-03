@@ -11,10 +11,18 @@ export const testsApi = createApi({
         body,
       }),
     }),
-    getTest: builder.query({
+    getAllTests: builder.query({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      query: (queryId: string) => ({ url: "/tests" }),
+    }),
+    getTestById: builder.query({
       query: (id) => ({ url: `/tests/${id}`, method: "GET" }),
     }),
   }),
 });
 
-export const { useCreateTestMutation, useGetTestQuery } = testsApi;
+export const {
+  useCreateTestMutation,
+  useGetAllTestsQuery,
+  useGetTestByIdQuery,
+} = testsApi;
