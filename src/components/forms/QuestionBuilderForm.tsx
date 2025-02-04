@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import {
   Form,
@@ -16,11 +15,22 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { questionSchema } from "@/lib/zod/questionsSchema";
-import { CloudUpload, Plus, Trash2 } from "lucide-react";
+import { CloudUpload, Loader2, Plus, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "../ui/textarea";
+import { useCreateQuestionMutation } from "@/lib/apiSlices/questionsApi";
+import { toast } from "@/hooks/use-toast";
+import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 
-const QuestionBuilderForm = () => {
+const QuestionBuilderForm = ({
+  testId,
+  questionNumber,
+}: {
+  testId: string;
+  questionNumber: number;
+}) => {
+  const [createQuestion, { isLoading }] = useCreateQuestionMutation();
+
   const form = useForm<z.infer<typeof questionSchema>>({
     resolver: zodResolver(questionSchema),
     defaultValues: {
@@ -67,13 +77,29 @@ const QuestionBuilderForm = () => {
       text: options[Number(data.correctAnswer)],
     };
 
-    const quizData = {
+    const questionData = {
+      questionNumber,
       question: data.question,
       options,
       correctAnswer,
     };
 
-    console.log(quizData);
+    try {
+      await createQuestion({ testId, ...questionData }).unwrap();
+
+      toast({
+        title: "Success!",
+        description: "Question created successfully",
+      });
+    } catch (error: unknown) {
+      toast({
+        title: "Error!",
+        description: getApiErrorMessage(
+          error,
+          "Failed creating test. Please try again."
+        ),
+      });
+    }
   };
 
   return (
@@ -162,8 +188,18 @@ const QuestionBuilderForm = () => {
                 Add another option
               </Button>
               <Button type="submit" className="font-semibold">
-                <CloudUpload />
-                Save
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="animate-spin" />
+                    <CloudUpload />
+                    Saving
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <CloudUpload />
+                    Save
+                  </div>
+                )}
               </Button>
             </div>
           </form>

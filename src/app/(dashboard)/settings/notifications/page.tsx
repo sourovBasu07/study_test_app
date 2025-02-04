@@ -1,4 +1,4 @@
-import NotificationsForm from "@/components/forms/NotificationsDorm";
+import NotificationsForm from "@/components/forms/NotificationForm";
 import { Separator } from "@/components/ui/separator";
 
 const SettingsNotificationsPage = () => {

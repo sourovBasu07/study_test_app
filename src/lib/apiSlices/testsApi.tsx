@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const testsApi = createApi({
   reducerPath: "testsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "/api/teacher" }),
   endpoints: (builder) => ({
     createTest: builder.mutation({
       query: (body) => ({

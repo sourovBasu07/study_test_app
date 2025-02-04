@@ -1,3 +1,5 @@
+import { ObjectId } from "mongoose";
+
 export interface UserDocument {
   _id: string;
   email: string;
@@ -10,19 +12,28 @@ export interface UserDocument {
   updatedAt: Date;
 }
 
+export interface QuestionDocument {
+  _id: string;
+  questionNumber: number;
+  question: string;
+  options: string[];
+  correctAnswer: {
+    number: number;
+    text: string;
+  };
+  marks: number;
+  questionType: "mcq" | "written";
+  hint?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface TestDocument {
   _id: string;
   subject: string;
   totalQuestions: number;
   duration: number;
-  questions: {
-    question: string;
-    options: string[];
-    correctAnswer: {
-      number: number;
-      text: string;
-    };
-  }[];
+  questions: ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
