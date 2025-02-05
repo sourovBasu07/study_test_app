@@ -14,6 +14,7 @@ export interface UserDocument {
 
 export interface QuestionDocument {
   _id: string;
+  testId: ObjectId;
   questionNumber: number;
   question: string;
   options: string[];

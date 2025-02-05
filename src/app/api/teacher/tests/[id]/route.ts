@@ -12,15 +12,11 @@ export async function GET(
   try {
     const testId = (await params).id;
 
-    console.log(testId);
-
     if (!testId) {
       return NextResponse.json({ error: "Test ID not found" }, { status: 400 });
     }
 
-    const test = await Test.findOne({ _id: testId });
-
-    console.log("Test", test);
+    const test = await Test.findById(testId).select("-questions");
 
     if (!test) {
       return NextResponse.json({ error: "Invalid test ID" }, { status: 400 });

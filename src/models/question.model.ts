@@ -9,6 +9,12 @@ function arrayLimit(val: any[]) {
 }
 
 export const QuestionSchema = new Schema<QuestionDocument>({
+  testId: {
+    type: Schema.Types.ObjectId,
+    ref: "Test",
+    index: true,
+    required: true,
+  },
   questionNumber: {
     type: Number,
     required: true,

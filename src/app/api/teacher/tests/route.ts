@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   await connectDB();
   try {
-    const tests = await Test.find({});
+    const tests = await Test.find({}).lean();
 
     console.log("Test", tests);
 

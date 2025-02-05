@@ -10,12 +10,20 @@ export async function POST(request: NextRequest) {
   try {
     const { testId, ...questionData } = await request.json();
 
+    if (!testId) {
+      return NextResponse.json({ error: "Provide Test ID" }, { status: 400 });
+    }
+
     const test = await Test.findById(testId);
     if (!test) {
       return NextResponse.json({ error: "Test not found" }, { status: 404 });
     }
 
-    const createdQuestion = await Question.create(questionData);
+    const createdQuestion = await Question.create({
+      testId,
+      ...questionData,
+    });
+
     if (!createdQuestion) {
       return NextResponse.json(
         { error: "Error creating test" },
@@ -23,13 +31,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    test.questions.push(createdQuestion._id);
-    await test.save();
+    // Push question to test
+    await Test.findByIdAndUpdate(testId, {
+      $push: { questions: createdQuestion._id },
+    });
 
-    return NextResponse.json(
-      { message: "Question added successfully", question: createdQuestion },
-      { status: 201 }
-    );
+    return NextResponse.json({ data: createdQuestion }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(
       { error: getErrorMessage(error) },
@@ -41,18 +48,22 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   await connectDB();
   try {
-    const tests = await Test.find({});
+    const testId = request.nextUrl.searchParams.get("testId");
 
-    console.log("Test", tests);
+    if (!testId) {
+      return NextResponse.json({ error: "Provide Test ID" }, { status: 400 });
+    }
 
-    if (!tests) {
+    const questions = await Question.find({ testId }).lean();
+
+    if (!questions) {
       return NextResponse.json(
         { error: "No test found. Please create first" },
         { status: 400 }
       );
     }
 
-    return NextResponse.json({ data: tests, status: 200 }, { status: 200 });
+    return NextResponse.json({ data: questions, status: 200 }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(
       { error: getErrorMessage(error) },

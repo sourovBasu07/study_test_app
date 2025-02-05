@@ -18,24 +18,37 @@ import { questionSchema } from "@/lib/zod/questionsSchema";
 import { CloudUpload, Loader2, Plus, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "../ui/textarea";
-import { useCreateQuestionMutation } from "@/lib/apiSlices/questionsApi";
+import { useUpdateQuestionMutation } from "@/lib/apiSlices/questionsApi";
 import { toast } from "@/hooks/use-toast";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
+import { Dispatch, SetStateAction } from "react";
+import { QuestionDocument } from "@/types/SchemaTypes";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const QuestionBuilderForm = ({
-  testId,
-  questionNumber,
+const EditQuestionForm = ({
+  setIsEditOpen,
+  question,
 }: {
-  testId: string;
-  questionNumber: number;
+  setIsEditOpen: Dispatch<SetStateAction<boolean>>;
+  question: QuestionDocument;
 }) => {
-  const [createQuestion, { isLoading }] = useCreateQuestionMutation();
+  const [updateQuestion, { isLoading }] = useUpdateQuestionMutation();
 
   const form = useForm<z.infer<typeof questionSchema>>({
     resolver: zodResolver(questionSchema),
     defaultValues: {
-      question: "",
-      options: [{ option: "Option 1" }, { option: "Option 2" }],
+      question: question.question || "",
+      options: question.options.map((option) => ({ option })),
+      correctAnswer: question.correctAnswer.number.toString(),
+      marks: question.marks || 1,
+      questionType: question.questionType || "mcq",
+      hint: question.hint || "",
     },
     mode: "onBlur",
   });
@@ -60,6 +73,8 @@ const QuestionBuilderForm = ({
   const onSubmit = async (data: z.infer<typeof questionSchema>) => {
     const result = await questionSchema.safeParseAsync(data);
 
+    console.log(result);
+
     if (!result.success) {
       return;
     }
@@ -74,25 +89,29 @@ const QuestionBuilderForm = ({
     };
 
     const questionData = {
-      questionNumber,
       question: data.question,
       options,
       correctAnswer,
+      marks: data.marks,
+      questionType: data.questionType,
     };
 
     try {
-      await createQuestion({ testId, ...questionData }).unwrap();
+      await updateQuestion({
+        questionId: question._id,
+        ...questionData,
+      }).unwrap();
 
       toast({
         title: "Success!",
-        description: "Question created successfully",
+        description: "Question updated successfully",
       });
     } catch (error: unknown) {
       toast({
         title: "Error!",
         description: getApiErrorMessage(
           error,
-          "Failed creating question. Please try again."
+          "Failed updating question. Please try again."
         ),
       });
     }
@@ -100,15 +119,71 @@ const QuestionBuilderForm = ({
 
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Question {questionNumber}</CardTitle>
-      </CardHeader>
-      <CardContent className="w-full flex items-center">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-7"
-          >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="">
+          <CardHeader>
+            <CardTitle className="flex justify-between items-center">
+              <p className="">Question {question.questionNumber}</p>
+
+              <div className="flex gap-3">
+                <FormField
+                  control={form.control}
+                  name="marks"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        onValueChange={(value) =>
+                          field.onChange(parseInt(value))
+                        }
+                        defaultValue={field.value.toString()}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {Array.from({ length: 10 }).map((_, index) => (
+                            <SelectItem
+                              key={index}
+                              value={(index + 1).toString()}
+                            >
+                              {index + 1}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="questionType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="mcq">MCQ</SelectItem>
+                          <SelectItem value="written">Written</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="w-full flex flex-col gap-7">
             <FormField
               control={form.control}
               name="question"
@@ -129,6 +204,7 @@ const QuestionBuilderForm = ({
                 <FormItem className="space-y-3">
                   <FormControl>
                     <RadioGroup
+                      defaultValue={field.value}
                       onValueChange={field.onChange}
                       className="w-full grid grid-cols-2 gap-7"
                     >
@@ -181,28 +257,37 @@ const QuestionBuilderForm = ({
                 className="font-semibold"
               >
                 <Plus />
-                Add another option
+                Option
               </Button>
-              <Button type="submit" className="font-semibold">
-                {isLoading ? (
-                  <div className="flex items-center gap-2">
-                    <Loader2 className="animate-spin" />
-                    <CloudUpload />
-                    Saving
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <CloudUpload />
-                    Save
-                  </div>
-                )}
-              </Button>
+              <div className="flex gap-7">
+                <Button
+                  variant="outline"
+                  className="font-semibold"
+                  onClick={() => setIsEditOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" className="font-semibold">
+                  {isLoading ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="animate-spin" />
+                      <CloudUpload />
+                      Saving
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <CloudUpload />
+                      Save
+                    </div>
+                  )}
+                </Button>
+              </div>
             </div>
-          </form>
-        </Form>
-      </CardContent>
+          </CardContent>
+        </form>
+      </Form>
     </Card>
   );
 };
 
-export default QuestionBuilderForm;
+export default EditQuestionForm;

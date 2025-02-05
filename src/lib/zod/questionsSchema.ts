@@ -10,5 +10,8 @@ export const questionSchema = z.object({
     .array(optionSchema)
     .max(5, "Maximum of 5 options allowed")
     .min(2, "At least 2 options are required"),
-  correctAnswer: z.string(),
+  correctAnswer: z.string({ message: "please select the correct answer" }),
+  marks: z.number().optional().default(1),
+  questionType: z.enum(["mcq", "written"]).optional().default("mcq"),
+  hint: z.string().optional(),
 });

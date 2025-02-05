@@ -2,6 +2,7 @@ import { TestDocument } from "@/types/SchemaTypes";
 import mongoose from "mongoose";
 import { model } from "mongoose";
 import { Schema } from "mongoose";
+import Question from "./question.model";
 
 const TestSchema = new Schema<TestDocument>(
   {
@@ -20,7 +21,7 @@ const TestSchema = new Schema<TestDocument>(
     questions: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Question",
+        ref: Question,
       },
     ],
   },
