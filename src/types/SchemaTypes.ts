@@ -35,6 +35,8 @@ export interface TestDocument {
   totalQuestions: number;
   duration: number;
   questions: ObjectId[];
+  marks: number;
+  testDate: string;
   createdAt: Date;
   updatedAt: Date;
 }

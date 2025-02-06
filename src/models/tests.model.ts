@@ -24,6 +24,14 @@ const TestSchema = new Schema<TestDocument>(
         ref: Question,
       },
     ],
+    marks: {
+      type: Number,
+      required: true,
+    },
+    testDate: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

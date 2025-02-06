@@ -16,7 +16,7 @@ export default function RootLayout({
     <>
       <SidebarProvider>
         <AppSidebar />
-        <main className="w-full">{children}</main>
+        <main className="w-full px-7 py-3">{children}</main>
       </SidebarProvider>
     </>
   );

@@ -8,9 +8,15 @@ export async function POST(request: NextRequest) {
   await connectDB();
   try {
     const formData = await request.json();
-    const { success, data: parsedData } = createTestSchema.safeParse(formData);
+    const {
+      success,
+      data: parsedData,
+      error,
+    } = createTestSchema.safeParse(formData);
 
     if (!success) {
+      console.log(error);
+
       return NextResponse.json(
         { error: "Error parsing data. Please check your inputs." },
         { status: 400 }

@@ -2,21 +2,33 @@
 
 import * as React from "react";
 import {
-  AudioWaveform,
   BookOpen,
-  Command,
-  GalleryVerticalEnd,
   Settings2,
+  Home,
+  Settings,
+  Library,
+  Crosshair,
+  Megaphone,
+  GraduationCap,
+  Bell,
+  Mail,
+  CalendarCheck,
+  AlarmClockCheck,
+  NotebookPen,
+  BookMarked,
+  BookUser,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
-import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
 
@@ -27,61 +39,76 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
   navMain: [
     {
-      title: "Tournaments",
+      title: "Dashboard",
+      url: "#",
+      icon: Home,
+    },
+    {
+      title: "Teachers",
+      url: "#",
+      icon: BookUser,
+    },
+    {
+      title: "Students",
+      url: "#",
+      icon: GraduationCap,
+    },
+    {
+      title: "Class Routines",
+      url: "#",
+      icon: AlarmClockCheck,
+    },
+    {
+      title: "Exams",
+      url: "#",
+      icon: NotebookPen,
+    },
+    {
+      title: "Attendance",
+      url: "#",
+      icon: CalendarCheck,
+    },
+    {
+      title: "Syllabuses",
+      url: "#",
+      icon: BookMarked,
+    },
+    {
+      title: "Library",
+      url: "#",
+      icon: Library,
+    },
+    {
+      title: "Class Books",
       url: "#",
       icon: BookOpen,
-      items: [
-        {
-          title: "My Tournaments",
-          url: "/tournaments",
-        },
-        {
-          title: "Create Tournament",
-          url: "/tournaments/create",
-        },
-      ],
+    },
+    {
+      title: "Notices",
+      url: "#",
+      icon: Megaphone,
+    },
+    {
+      title: "Performances",
+      url: "#",
+      icon: Crosshair,
+    },
+    {
+      title: "Messages",
+      url: "#",
+      icon: Mail,
+    },
+    {
+      title: "Notifications",
+      url: "#",
+      icon: Bell,
     },
     {
       title: "Settings",
       url: "#",
       icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
     },
   ],
 };
@@ -90,9 +117,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <Settings className="size-4" />
+              </div>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold text-2xl">
+                  Educative
+                </span>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="mt-12">
+      <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>

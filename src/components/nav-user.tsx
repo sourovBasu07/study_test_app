@@ -26,6 +26,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { signOut } from "next-auth/react";
+import { useGetUserQuery } from "@/lib/apiSlices/usersApi";
 
 export function NavUser({
   user,
@@ -37,6 +38,9 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const { data: loggedUser } = useGetUserQuery({});
+
+  console.log(loggedUser);
 
   return (
     <SidebarMenu>

@@ -23,11 +23,19 @@ import { useCreateTestMutation } from "@/lib/apiSlices/testsApi";
 import { createTestSchema } from "@/lib/zod/testSchema";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const CreateTestForm = () => {
   const router = useRouter();
@@ -140,6 +148,69 @@ const CreateTestForm = () => {
                         }}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="marks"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Total Marks</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Ex: 50"
+                        {...field}
+                        value={field.value ?? ""}
+                        onChange={(e) => {
+                          const inputValue = e.target.value;
+                          field.onChange(
+                            inputValue === "" ? "" : parseInt(inputValue)
+                          );
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="testDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Test Date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={
+                            field.value ? new Date(field.value) : undefined
+                          } // Convert to Date
+                          onSelect={(date) => field.onChange(date)} // No need to convert back
+                          disabled={(date) => date < new Date()}
+                        />
+                      </PopoverContent>
+                    </Popover>
                     <FormMessage />
                   </FormItem>
                 )}
