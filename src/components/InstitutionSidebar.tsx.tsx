@@ -42,47 +42,47 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/institution/dashboard",
       icon: Home,
     },
     {
       title: "Teachers",
-      url: "#",
+      url: "/institution/teachers",
       icon: BookUser,
     },
     {
       title: "Students",
-      url: "#",
+      url: "/institution/students",
       icon: GraduationCap,
     },
     {
       title: "Class Routines",
-      url: "#",
+      url: "/institution/class-routines",
       icon: AlarmClockCheck,
     },
     {
       title: "Exams",
-      url: "#",
+      url: "/institution/exams",
       icon: NotebookPen,
     },
     {
       title: "Attendance",
-      url: "#",
+      url: "/institution/attendance",
       icon: CalendarCheck,
     },
     {
       title: "Syllabuses",
-      url: "#",
+      url: "/institution/syllabuses",
       icon: BookMarked,
     },
     {
       title: "Library",
-      url: "#",
+      url: "/institution/library",
       icon: Library,
     },
     {
       title: "Class Books",
-      url: "#",
+      url: "/institution/class-books",
       icon: BookOpen,
     },
     {
@@ -92,28 +92,30 @@ const data = {
     },
     {
       title: "Performances",
-      url: "#",
+      url: "/institution/performances",
       icon: Crosshair,
     },
     {
       title: "Messages",
-      url: "#",
+      url: "/institution/messages",
       icon: Mail,
     },
     {
       title: "Notifications",
-      url: "#",
+      url: "/institution/notifications",
       icon: Bell,
     },
     {
       title: "Settings",
-      url: "#",
+      url: "/institution/settings",
       icon: Settings2,
     },
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+const InstitutionSidebar = ({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) => {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -144,4 +146,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarRail />
     </Sidebar>
   );
-}
+};
+
+export default InstitutionSidebar;

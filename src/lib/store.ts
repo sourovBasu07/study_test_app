@@ -3,6 +3,7 @@ import { usersApi } from "./apiSlices/usersApi";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
 import { testsApi } from "./apiSlices/testsApi";
 import { questionsApi } from "./apiSlices/questionsApi";
+import { studentApi } from "./apiSlices/studentApi";
 
 export const makeStore = () => {
   return configureStore({
@@ -10,12 +11,14 @@ export const makeStore = () => {
       [usersApi.reducerPath]: usersApi.reducer,
       [testsApi.reducerPath]: testsApi.reducer,
       [questionsApi.reducerPath]: questionsApi.reducer,
+      [studentApi.reducerPath]: studentApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
         usersApi.middleware,
         testsApi.middleware,
-        questionsApi.middleware
+        questionsApi.middleware,
+        studentApi.middleware
       ),
   });
 };

@@ -17,7 +17,7 @@ import { z } from "zod";
 import { questionSchema } from "@/lib/zod/questionsSchema";
 import { CloudUpload, Loader2, Plus, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { useUpdateQuestionMutation } from "@/lib/apiSlices/questionsApi";
 import { toast } from "@/hooks/use-toast";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";

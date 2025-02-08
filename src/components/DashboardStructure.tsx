@@ -8,7 +8,13 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 
-const DashboardStructure = ({ children }: { children: ReactNode }) => {
+const DashboardStructure = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) => {
   return (
     <div className="flex flex-col gap-12">
       <div className="w-full h-12"></div>
@@ -16,7 +22,7 @@ const DashboardStructure = ({ children }: { children: ReactNode }) => {
         <div className="w-[5px] bg-white" />
         <div className="">
           <p className="font-semibold text-2xl uppercase tracking-wide">
-            Tests
+            {title}
           </p>
           <Breadcrumb>
             <BreadcrumbList>

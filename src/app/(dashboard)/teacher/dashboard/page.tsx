@@ -1,7 +1,5 @@
 import { auth } from "@/auth";
 import CheckPaymentLink from "@/components/CheckPaymentLink";
-import UseFieldArrayUnregister from "@/components/forms/QuizBuilderForm";
-// import QuizForm from "@/components/Quiz";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -40,7 +38,6 @@ export default async function Page() {
         </div>
         <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
       </div>
-      <UseFieldArrayUnregister />
     </div>
   );
 }

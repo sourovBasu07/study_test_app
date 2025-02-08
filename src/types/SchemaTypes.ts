@@ -1,4 +1,6 @@
+import { admissionSchema } from "@/lib/zod/studentSchema";
 import { ObjectId } from "mongoose";
+import { z } from "zod";
 
 export interface UserDocument {
   _id: string;
@@ -40,3 +42,9 @@ export interface TestDocument {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type StudentDocument = z.infer<typeof admissionSchema> & {
+  _id: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
