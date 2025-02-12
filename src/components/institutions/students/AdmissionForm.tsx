@@ -78,7 +78,7 @@ const AdmissionForm = () => {
   const onSubmit = async (values: z.infer<typeof admissionSchema>) => {
     console.log("clicked");
 
-    const { success, data, error } = await admissionSchema.safeParse(values);
+    const { success, data, error } = admissionSchema.safeParse(values);
 
     if (!success) {
       console.log(error);

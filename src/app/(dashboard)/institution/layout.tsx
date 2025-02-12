@@ -1,6 +1,5 @@
+import InstitutionSidebar from "@/components/institutionSidebar";
 import type { Metadata } from "next";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import InstitutionSidebar from "@/components/InstitutionSidebar.tsx";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,11 +12,9 @@ export default function InstitutionLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <SidebarProvider>
-        <InstitutionSidebar />
-        <main className="w-full px-7 py-3">{children}</main>
-      </SidebarProvider>
-    </>
+    <div className="flex">
+      <InstitutionSidebar />
+      <main className="w-full px-7 py-3">{children}</main>
+    </div>
   );
 }

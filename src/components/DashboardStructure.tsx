@@ -1,12 +1,5 @@
 import { ReactNode } from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import Link from "next/link";
+import CustomBreadcrumbs from "./Breadcrumbs";
 
 const DashboardStructure = ({
   title,
@@ -24,21 +17,7 @@ const DashboardStructure = ({
           <p className="font-semibold text-2xl uppercase tracking-wide">
             {title}
           </p>
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/">Dashboard</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/">Tests</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          <CustomBreadcrumbs />
         </div>
       </div>
       {children}

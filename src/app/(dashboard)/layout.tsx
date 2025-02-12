@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { SidebarProvider } from "@/components/ui/sidebar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,10 +12,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <SidebarProvider>
-        {/* <AppSidebar /> */}
-        <main className="w-full px-7 py-3">{children}</main>
-      </SidebarProvider>
+      <main className="w-full">{children}</main>
     </>
   );
 }
