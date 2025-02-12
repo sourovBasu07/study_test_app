@@ -1,23 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { getErrorMessage } from "@/utils/getErrorMessage";
-import Student from "@/models/student.model";
+import Teacher from "@/models/teacher.model";
+import bcrypt from "bcryptjs";
 
 export async function POST(request: NextRequest) {
   await connectDB();
   try {
-    const formData = await request.json();
+    const { password, ...data } = await request.json();
 
-    const newStudent = await Student.create(formData);
-    if (!newStudent) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    delete data.confirmPassword;
+
+    const newTeacher = await Teacher.create({
+      password: hashedPassword,
+      ...data,
+    });
+    if (!newTeacher) {
       return NextResponse.json(
-        { error: "Error creating student" },
+        { error: "Error creating teacher" },
         { status: 400 }
       );
     }
 
     return NextResponse.json(
-      { data: newStudent, status: 201 },
+      { data: newTeacher, status: 201 },
       { status: 200 }
     );
   } catch (error: any) {
@@ -31,16 +38,16 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   await connectDB();
   try {
-    const students = await Student.find({}).lean();
+    const teachers = await Teacher.find({}).lean();
 
-    if (!students) {
+    if (!teachers) {
       return NextResponse.json(
-        { error: "No student found. Please add students first" },
+        { error: "No teacher found. Please add teachers first" },
         { status: 400 }
       );
     }
 
-    return NextResponse.json({ data: students, status: 200 }, { status: 200 });
+    return NextResponse.json({ data: teachers, status: 200 }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(
       { error: getErrorMessage(error) },

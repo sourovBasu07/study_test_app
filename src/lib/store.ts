@@ -4,22 +4,15 @@ import { setupListeners } from "@reduxjs/toolkit/query/react";
 import { testsApi } from "./apiSlices/testsApi";
 import { questionsApi } from "./apiSlices/questionsApi";
 import { studentApi } from "./apiSlices/studentApi";
+import apiSlice from "./apiSlices/apiSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      [usersApi.reducerPath]: usersApi.reducer,
-      [testsApi.reducerPath]: testsApi.reducer,
-      [questionsApi.reducerPath]: questionsApi.reducer,
-      [studentApi.reducerPath]: studentApi.reducer,
+      [apiSlice.reducerPath]: apiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(
-        usersApi.middleware,
-        testsApi.middleware,
-        questionsApi.middleware,
-        studentApi.middleware
-      ),
+      getDefaultMiddleware().concat(apiSlice.middleware),
   });
 };
 

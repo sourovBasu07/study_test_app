@@ -5,7 +5,7 @@ import { Schema } from "mongoose";
 const studentSchema = new Schema(
   {
     studentId: { type: String, required: true, unique: true },
-    admissionDate: { type: String, required: true },
+    admissionDate: { type: Date, required: true },
     studentName: {
       type: String,
       required: true,

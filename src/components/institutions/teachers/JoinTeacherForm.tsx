@@ -4,7 +4,6 @@ import { z } from "zod";
 import { Check, FileImage, UserPlus, X } from "lucide-react";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 import { CalendarIcon } from "lucide-react";
-import { useCreateStudentMutation } from "@/lib/apiSlices/studentApi";
 import { teacherSchema } from "@/lib/zod/teacherSchema";
 import { useForm, zodResolver } from "@mantine/form";
 import { DatePickerInput } from "@mantine/dates";
@@ -32,6 +31,7 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useState } from "react";
+import { useCreateTeacherMutation } from "@/lib/apiSlices/teachersApi";
 
 function PasswordRequirement({
   meets,
@@ -124,15 +124,14 @@ function PasswordInputWithStrength({
 }
 
 const JoinTeacherForm = () => {
-  const [createStudent, { isLoading }] = useCreateStudentMutation();
+  const [joinTeacher, { isLoading }] = useCreateTeacherMutation();
   const form = useForm<z.infer<typeof teacherSchema>>({
     validate: zodResolver(teacherSchema),
+    validateInputOnBlur: true,
   });
 
   const handleJoinTeacher = async (values: z.infer<typeof teacherSchema>) => {
     const { success, data, error } = teacherSchema.safeParse(values);
-
-    console.log(data);
 
     if (!success) {
       console.log(error);
@@ -140,8 +139,12 @@ const JoinTeacherForm = () => {
       return;
     }
 
+    delete data.nid;
+    delete data.photo;
+    delete data.joiningLetter;
+
     try {
-      await createStudent(data).unwrap();
+      await joinTeacher(data).unwrap();
       notifications.show({
         title: "Success!",
         message: "Teacher added successfully",
@@ -172,7 +175,7 @@ const JoinTeacherForm = () => {
                     Add new teacher to the institution{" "}
                   </Mark>{" "}
                 </Title>
-                <Title order={4}>Simply fill up the form</Title>
+                <Text>Simply fill up the form</Text>
               </Stack>
 
               <DatePickerInput

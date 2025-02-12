@@ -1,4 +1,5 @@
 import { z } from "zod";
+import mongoose, { Schema } from "mongoose";
 
 export const passwordSchema = z
   .string()
@@ -59,9 +60,9 @@ export const teacherSchema = z
     religion: z.enum(["hinduism", "islan", "christianity", "buddhism"]),
     dateOfBirth: z.date(),
     nidNumber: z.number(),
-    nid: z.string().optional(),
-    photo: z.string().optional(),
-    joiningLetter: z.string().optional(),
+    nid: z.instanceof(File).optional(),
+    photo: z.instanceof(File).optional(),
+    joiningLetter: z.instanceof(File).optional(),
     address: z
       .string()
       .min(1, "Address is required")
@@ -69,5 +70,5 @@ export const teacherSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ["confirmPassword"], // path of error
+    path: ["confirmPassword"],
   });

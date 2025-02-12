@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const admissionSchema = z.object({
   studentId: z.string(),
-  admissionDate: z.string(),
+  admissionDate: z.date(),
   studentName: z
     .string()
     .trim()
@@ -20,17 +20,21 @@ export const admissionSchema = z.object({
     .max(100, "Maximum 100 letters"),
   class: z.string(),
   section: z.string().trim().optional(),
-  roll: z.string().transform((value) => parseInt(value)),
-  year: z.string().transform((value) => parseInt(value)),
+  roll: z.number(),
+  year: z.number(),
   department: z.enum(["arts", "commerce", "science"]).optional(),
   gender: z.enum(["male", "female"]),
   religion: z.enum(["hinduism", "islan", "christianity", "buddhism"]),
   dateOfBirth: z.date(),
-  guardianContactNumber: z.string().trim().length(11, "Wrong phone number"),
-  birthCertificateNumber: z.string(),
-  birthCertificate: z.string().optional(),
-  photo: z.string().optional(),
-  transferCertificate: z.string().optional(),
+  guardianContactNumber: z
+    .number()
+    .refine((num) => num.toString().length === 10, {
+      message: "Enter 10 digits after +880",
+    }),
+  birthCertificateNumber: z.number(),
+  birthCertificate: z.instanceof(File).optional(),
+  photo: z.instanceof(File).optional(),
+  transferCertificate: z.instanceof(File).optional(),
   remarks: z.string().optional(),
   address: z
     .string()

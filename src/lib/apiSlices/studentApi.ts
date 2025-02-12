@@ -1,9 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import apiSlice from "./apiSlice";
 
-export const studentApi = createApi({
-  reducerPath: "studentApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/institution" }),
-  tagTypes: ["Student"],
+export const studentApi = apiSlice.injectEndpoints({
+  overrideExisting: process.env.NODE_ENV === "development",
   endpoints: (builder) => ({
     createStudent: builder.mutation({
       query: (body) => ({
@@ -27,26 +25,7 @@ export const studentApi = createApi({
             ]
           : [{ type: "Student", id: "LIST" }], // Empty state
     }),
-    getQuestionById: builder.query({
-      query: (id) => ({ url: `/tests/questions/${id}`, method: "GET" }),
-      providesTags: (result, error, id) => [{ type: "Student", id }], // Dynamic tag for caching
-    }),
-    updateQuestion: builder.mutation({
-      query: ({ questionId, ...patch }) => ({
-        url: `/tests/questions/${questionId}`,
-        method: "PATCH",
-        body: patch,
-      }),
-      invalidatesTags: (result, error, { questionId }) => [
-        { type: "Student", id: questionId }, // Invalidate specific question
-      ],
-    }),
   }),
 });
 
-export const {
-  useCreateStudentMutation,
-  useGetAllStudentsQuery,
-  useGetQuestionByIdQuery,
-  useUpdateQuestionMutation,
-} = studentApi;
+export const { useCreateStudentMutation, useGetAllStudentsQuery } = studentApi;

@@ -13,10 +13,15 @@ import {
   Card,
   CardSection,
   FileInput,
+  Group,
+  Mark,
   NumberInput,
   Select,
+  Stack,
+  Text,
   Textarea,
   TextInput,
+  Title,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { notifications } from "@mantine/notifications";
@@ -60,8 +65,6 @@ const AdmissionForm = () => {
   });
 
   const handleAdmission = async (values: z.infer<typeof admissionSchema>) => {
-    console.log("clicked");
-
     const { success, data, error } = admissionSchema.safeParse(values);
 
     if (!success) {
@@ -69,6 +72,10 @@ const AdmissionForm = () => {
 
       return;
     }
+
+    delete data.birthCertificate;
+    delete data.photo;
+    delete data.transferCertificate;
 
     try {
       await createStudent(data).unwrap();
@@ -88,16 +95,22 @@ const AdmissionForm = () => {
   };
 
   return (
-    <Card className="w-full">
+    <Card shadow="sm" p="lg" radius="md" withBorder>
       <form
         onSubmit={form.onSubmit((values) => handleAdmission(values))}
         className=""
       >
-        <CardSection></CardSection>
-
-        <CardSection className="">
+        <CardSection p="xl">
           <div className="flex flex-col gap-12">
-            <div className="flex justify-end">
+            <Group justify="space-between">
+              <Stack gap="sm">
+                <Title order={3} textWrap="wrap">
+                  <Mark color="blue" px={12} py={3}>
+                    Add new student to the institution{" "}
+                  </Mark>{" "}
+                </Title>
+                <Text>Simply fill up the form</Text>
+              </Stack>
               <DatePickerInput
                 leftSection={<CalendarIcon size={16} strokeWidth={1.5} />}
                 leftSectionPointerEvents="none"
@@ -107,7 +120,7 @@ const AdmissionForm = () => {
                 {...form.getInputProps("admissionDate")}
                 className="w-[250px]"
               />
-            </div>
+            </Group>
             <div className="flex flex-col gap-7">
               <p className="font-semibold text-2xl text-muted-foreground">
                 Personal information
@@ -128,8 +141,8 @@ const AdmissionForm = () => {
                 <TextInput
                   label="Mother's Name"
                   placeholder="Enter mother name"
-                  key={form.key("otherName")}
-                  {...form.getInputProps("otherName")}
+                  key={form.key("motherName")}
+                  {...form.getInputProps("motherName")}
                 />
                 <Select
                   label="Gender"
@@ -316,8 +329,8 @@ const AdmissionForm = () => {
                   placeholder="Click to select"
                   leftSectionPointerEvents="none"
                   clearable
-                  key={form.key("photo")}
-                  {...form.getInputProps("photo")}
+                  key={form.key("transferCertificate")}
+                  {...form.getInputProps("transferCertificate")}
                 />
               </div>
             </div>
