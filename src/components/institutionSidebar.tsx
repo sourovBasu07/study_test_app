@@ -3,7 +3,6 @@
 import {
   BookOpen,
   Home,
-  Settings,
   Library,
   Crosshair,
   Megaphone,
@@ -15,6 +14,7 @@ import {
   NotebookPen,
   BookMarked,
   BookUser,
+  School,
 } from "lucide-react";
 import { Group, ScrollArea } from "@mantine/core";
 import classes from "./InstitutionSidebar.module.css";
@@ -89,9 +89,9 @@ const data = [
     icon: Bell,
   },
   {
-    label: "Settings",
-    link: "/institution/settings",
-    icon: Settings,
+    label: "Profile",
+    link: "/institution/profile",
+    icon: School,
   },
 ];
 

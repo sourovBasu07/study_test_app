@@ -1,3 +1,4 @@
+import DashboardHeader from "@/components/DashboardHeader";
 import InstitutionSidebar from "@/components/institutionSidebar";
 import type { Metadata } from "next";
 
@@ -14,7 +15,12 @@ export default function InstitutionLayout({
   return (
     <div className="flex">
       <InstitutionSidebar />
-      <main className="w-full px-7 py-3">{children}</main>
+      <main className="w-full flex flex-col">
+        <DashboardHeader />
+        <div className="h-[calc(100vh-70px)] overflow-scroll px-7 py-3">
+          {children}
+        </div>
+      </main>
     </div>
   );
 }
